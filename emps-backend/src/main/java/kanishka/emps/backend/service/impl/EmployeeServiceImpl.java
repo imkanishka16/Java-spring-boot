@@ -7,7 +7,6 @@ import kanishka.emps.backend.mapper.EmployeeMapper;
 import kanishka.emps.backend.repository.EmployeeRepository;
 import kanishka.emps.backend.service.EmployeeService;
 import lombok.AllArgsConstructor;
-import org.hibernate.query.sql.internal.ParameterRecognizerImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,6 +53,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee updatedEmployeeObj = employeeRepository.save(employee);
 
         return EmployeeMapper.mapToEmployeeDto(updatedEmployeeObj);
+    }
+
+    @Override
+    public void deleteEmployee(Long employeeId) {
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee is not exists with given id:" + employeeId));
+        employeeRepository.deleteById(employeeId);
     }
 
 }
